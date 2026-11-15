@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Add assessment</h1>
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+    <p>Order: slot dates &lt; booking dates &lt; exam date</p>
+    <label>Name</label><input name="name" required>
+    <label>Summary</label><input name="summary" required>
+    <label>Kind</label>
+    <select name="kind">
+        <option>Viva</option><option>Practical</option>
+        <option>Project Demo</option><option selected>Assessment</option>
+    </select>
+    <label>Exam date</label><input type="date" name="hold_date" required>
+    <label>Minutes</label><input type="number" name="minutes" min="1" required>
+    <label>Total marks</label><input type="number" name="total_marks" value="100" min="1" required>
+    <label>Slot from</label><input type="date" name="slot_from" required>
+    <label>Slot until</label><input type="date" name="slot_until" required>
+    <label>Book from</label><input type="date" name="book_from" required>
+    <label>Book until</label><input type="date" name="book_until" required>
+    <label>Marker</label>
+    <select name="marker_id" required>
+        {% for m in markers %}<option value="{{ m.id }}">{{ m.display_name }}</option>{% endfor %}
+    </select>
+    <label>Subject</label>
+    <select name="subject_id" required>
+        {% for s in subjects %}<option value="{{ s.id }}">{{ s.code }} - {{ s.name }}</option>{% endfor %}
+    </select>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

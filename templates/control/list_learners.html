@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Learners</h1>
+    <form method="get" style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search">
+        <button class="btn" type="submit">Search</button>
+    </form>
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Active</th><th></th></tr>
+        {% for u in rows %}
+        <tr>
+            <td>{{ u.id }}</td><td>{{ u.display_name }}</td><td>{{ u.email }}</td>
+            <td>{{ 'Yes' if u.active_flag else 'No' }}</td>
+            <td>
+                <a href="/control/learner_card/{{ u.id }}">Card</a>
+                {% if u.active_flag %}<a href="/control/freeze_user/{{ u.id }}">Freeze</a>
+                {% else %}<a href="/control/unfreeze_user/{{ u.id }}">Unfreeze</a>{% endif %}
+            </td>
+        </tr>
+        {% else %}<tr><td colspan="5">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}

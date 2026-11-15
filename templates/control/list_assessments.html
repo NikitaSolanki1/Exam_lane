@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Assessments</h1>
+    <form method="get" style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search">
+        <button class="btn" type="submit">Search</button>
+    </form>
+    <p><a class="btn" href="/control/add_assessment">Add assessment</a></p>
+    <div style="overflow-x:auto;">
+    <table>
+        <tr>
+            <th>ID</th><th>Name</th><th>Kind</th><th>Date</th><th>Minutes</th><th>Marks</th>
+            <th>Marker</th><th>Phase</th><th>Rubric</th><th>Slots</th><th>Booking</th><th>Results</th><th></th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.id }}</td><td>{{ row.name }}</td><td>{{ row.kind }}</td>
+            <td>{{ row.hold_date }}</td><td>{{ row.minutes }}</td><td>{{ row.total_marks }}</td>
+            <td>{{ row.marker_label }}</td><td>{{ labels[row.id] }}</td>
+            <td><a href="/control/add_rubric/{{ row.id }}">Add</a> / <a href="/control/list_rubrics/{{ row.id }}">List</a></td>
+            <td>{% if row.slot_open %}Open <a href="/control/close_slots/{{ row.id }}">Close</a>{% else %}Closed <a href="/control/open_slots/{{ row.id }}">Open</a>{% endif %}</td>
+            <td>{% if row.book_open %}Open <a href="/control/close_books/{{ row.id }}">Close</a>{% else %}Closed <a href="/control/open_books/{{ row.id }}">Open</a>{% endif %}</td>
+            <td>{% if row.result_live %}Live <a href="/control/hide_results/{{ row.id }}">Hide</a>{% else %}Hidden <a href="/control/show_results/{{ row.id }}">Show</a>{% endif %}</td>
+            <td><a href="/control/edit_assessment/{{ row.id }}">Edit</a> <a href="/control/drop_assessment/{{ row.id }}">Drop</a></td>
+        </tr>
+        {% else %}<tr><td colspan="13">None</td></tr>{% endfor %}
+    </table>
+    </div>
+</div>
+{% endblock %}

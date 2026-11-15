@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Edit subject</h1>
+    <label>Code</label><input name="code" value="{{ row.code }}" required>
+    <label>Name</label><input name="name" value="{{ row.name }}" required>
+    <label>Summary</label><input name="summary" value="{{ row.summary }}" required>
+    <label>Weeks</label><input name="weeks" value="{{ row.weeks }}" required>
+    <label>State</label>
+    <select name="state">
+        <option {% if row.state=='Active' %}selected{% endif %}>Active</option>
+        <option {% if row.state=='Inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

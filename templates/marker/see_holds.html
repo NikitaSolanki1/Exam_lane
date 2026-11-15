@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Holds</h1>
+    <table>
+        <tr><th>ID</th><th>Learner</th><th>Exam</th><th>Slot</th><th>State</th><th>Score</th><th></th></tr>
+        {% for h in holds %}
+        {% set exam = exam_map.get(h.assessment_id) %}
+        {% set learner = people.get(h.learner_id) %}
+        {% set slot = slot_map.get(h.slot_id) %}
+        {% set sc = scores.get(h.id) %}
+        <tr>
+            <td>{{ h.id }}</td>
+            <td>{{ learner.display_name if learner else h.learner_id }}</td>
+            <td>{{ exam.name if exam else h.assessment_id }}</td>
+            <td>{% if slot %}{{ slot.day }} {{ slot.start_clock }}{% else %}-{% endif %}</td>
+            <td>{{ h.state }}</td>
+            <td>{% if sc and sc.awarded is not none %}{{ sc.awarded }}/{{ sc.possible }}{% else %}Pending{% endif %}</td>
+            <td><a href="/marker/hold_card/{{ h.id }}">Card</a> <a href="/marker/grade/{{ h.id }}">Grade</a></td>
+        </tr>
+        {% else %}<tr><td colspan="7">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Scores</h1>
+    {% set ns = namespace(shown=false) %}
+    {% for exam in exams %}
+        {% if exam.result_live %}
+        {% set ns.shown = true %}
+        <div class="block">
+            <h2>{{ exam.name }}</h2>
+            <p>{{ exam.hold_date }} · max {{ exam.total_marks }}</p>
+            <table>
+                <tr><th>Line</th><th>Max</th><th>Points</th></tr>
+                {% for line in lines_by.get(exam.id, []) %}
+                <tr>
+                    <td>{{ line.label }}</td>
+                    <td>{{ line.max_points }}</td>
+                    <td>{{ points.get(line.id, '-') }}</td>
+                </tr>
+                {% else %}<tr><td colspan="3">No lines</td></tr>{% endfor %}
+            </table>
+            <p><b>Feedback:</b> {{ notes.get(exam.id, 'None') }}</p>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% if not ns.shown %}<p>No live scores yet.</p>{% endif %}
+</div>
+{% endblock %}

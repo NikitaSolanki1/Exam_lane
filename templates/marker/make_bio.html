@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Marker bio</h1>
+    <label>Display name</label><input name="display_name" value="{{ person.display_name }}" required>
+    <label>Email</label><input type="email" name="email" value="{{ person.email }}" required>
+    <label>Dept</label><input name="dept" value="{{ bio.dept if bio else '' }}" required>
+    <label>Phone</label><input name="phone" value="{{ bio.phone if bio else '' }}" required>
+    <label>Office</label><input name="office" value="{{ bio.office if bio else '' }}" required>
+    <label>Years</label><input name="years" value="{{ bio.years if bio else '0' }}" required>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Edit slot</h1>
+    <p>{{ exam.name }}</p>
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+    <label>Day</label><input type="date" name="day" value="{{ slot.day }}" required>
+    <label>Start</label><input type="time" name="start_clock" value="{{ slot.start_clock.strftime('%H:%M') }}" required>
+    <label>Capacity</label><input type="number" name="capacity" value="{{ slot.capacity }}" min="1" required>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

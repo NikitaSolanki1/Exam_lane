@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Grade learner</h1>
+    <p>{{ exam.name }} · {{ learner.display_name }}</p>
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+    {% for line in lines %}
+    <label>{{ line.label }} (max {{ line.max_points }})</label>
+    {% if line.note %}<small>{{ line.note }}</small>{% endif %}
+    <input type="number" name="points_{{ line.id }}" min="0" max="{{ line.max_points }}"
+           value="{{ saved[line.id].points if saved.get(line.id) else '' }}" required>
+    {% else %}<div class="msg">No rubric lines.</div>{% endfor %}
+    <label>Feedback</label>
+    <textarea name="text" rows="3">{{ note.text if note else '' }}</textarea>
+    <button class="btn" type="submit">Submit</button>
+</form>
+{% endblock %}

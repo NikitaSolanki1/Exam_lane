@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Edit learner bio</h1>
+    <label>Roll no</label><input name="roll_no" value="{{ bio.roll_no }}" required>
+    <label>Phone</label><input name="phone" value="{{ bio.phone }}" required>
+    <label>Address</label><input name="home_address" value="{{ bio.home_address }}" required>
+    <label>Batch year</label><input name="batch_year" value="{{ bio.batch_year }}" required>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

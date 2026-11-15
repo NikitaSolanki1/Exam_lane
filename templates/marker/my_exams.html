@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>My exams</h1>
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Kind</th><th>Subject</th><th>Date</th><th>Slots</th><th>Booking</th><th></th></tr>
+        {% for e in exams %}
+        {% set sub = subjects.get(e.subject_id) %}
+        <tr>
+            <td>{{ e.id }}</td><td>{{ e.name }}</td><td>{{ e.kind }}</td>
+            <td>{{ sub.name if sub else e.subject_id }}</td>
+            <td>{{ e.hold_date }}</td>
+            <td>{{ 'Open' if e.slot_open else 'Closed' }}</td>
+            <td>{{ 'Open' if e.book_open else 'Closed' }}</td>
+            <td><a href="/marker/manage_slots/{{ e.id }}">Slots</a></td>
+        </tr>
+        {% else %}<tr><td colspan="8">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>All slots</h1>
+    <form method="get" style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search">
+        <button class="btn" type="submit">Search</button>
+    </form>
+    <table>
+        <tr><th>ID</th><th>Exam</th><th>Marker</th><th>Day</th><th>Start</th><th>End</th><th>Cap</th><th>Booked</th><th>Free</th><th>State</th></tr>
+        {% for s in slots %}
+        {% set exam = exams.get(s.assessment_id) %}
+        {% set marker = markers.get(s.marker_id) %}
+        {% set booked = counts.get(s.id, 0) %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ exam.name if exam else s.assessment_id }}</td>
+            <td>{{ marker.display_name if marker else s.marker_id }}</td>
+            <td>{{ s.day }}</td><td>{{ s.start_clock }}</td><td>{{ s.end_clock }}</td>
+            <td>{{ s.capacity }}</td><td>{{ booked }}</td><td>{{ s.capacity - booked }}</td><td>{{ s.state }}</td>
+        </tr>
+        {% else %}<tr><td colspan="10">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}

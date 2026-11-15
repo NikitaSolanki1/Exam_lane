@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Add rubric line</h1>
+    <label>Label</label><input name="label" required>
+    <label>Max points</label><input type="number" name="max_points" min="1" required>
+    <label>Weight</label><input type="number" step="0.1" name="weight" value="1.0">
+    <label>Note</label><input name="note">
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+<form class="form-wrap" method="post">
+    <h1>Edit assessment</h1>
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+    {% if locked %}<div class="msg">Marker change locked while bookings exist.</div>{% endif %}
+    <label>Name</label><input name="name" value="{{ row.name }}" required>
+    <label>Summary</label><input name="summary" value="{{ row.summary }}" required>
+    <label>Kind</label>
+    <select name="kind">
+        {% for k in ['Viva','Practical','Project Demo','Assessment'] %}
+        <option {% if row.kind==k %}selected{% endif %}>{{ k }}</option>
+        {% endfor %}
+    </select>
+    <label>Exam date</label><input type="date" name="hold_date" value="{{ row.hold_date }}" required>
+    <label>Minutes</label><input type="number" name="minutes" value="{{ row.minutes }}" min="1" required>
+    <label>Total marks</label><input type="number" name="total_marks" value="{{ row.total_marks }}" min="1" required>
+    <label>Slot from</label><input type="date" name="slot_from" value="{{ row.slot_from }}" required>
+    <label>Slot until</label><input type="date" name="slot_until" value="{{ row.slot_until }}" required>
+    <label>Book from</label><input type="date" name="book_from" value="{{ row.book_from }}" required>
+    <label>Book until</label><input type="date" name="book_until" value="{{ row.book_until }}" required>
+    <label>Marker</label>
+    <select name="marker_id" required {% if locked %}disabled{% endif %}>
+        {% for m in markers %}
+        <option value="{{ m.id }}" {% if m.id==row.marker_id %}selected{% endif %}>{{ m.display_name }}</option>
+        {% endfor %}
+    </select>
+    {% if locked %}<input type="hidden" name="marker_id" value="{{ row.marker_id }}">{% endif %}
+    <label>Subject</label>
+    <select name="subject_id" required>
+        {% for s in subjects %}
+        <option value="{{ s.id }}" {% if s.id==row.subject_id %}selected{% endif %}>{{ s.code }} - {{ s.name }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

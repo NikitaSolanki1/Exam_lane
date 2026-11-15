@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Marker home</h1>
+    <div class="counts">
+        <div class="count"><b>{{ exams|length }}</b>Exams</div>
+        <div class="count"><b>{{ slots|length }}</b>Slots</div>
+        <div class="count"><b>{{ holds|length }}</b>Holds</div>
+        <div class="count"><b>{{ waiting }}</b>Pending grades</div>
+    </div>
+    {% if bio %}
+    <div class="block">
+        <h2>{{ person.display_name }}</h2>
+        <p>{{ person.email }} · {{ bio.dept }} · {{ bio.years }} yrs</p>
+        <a class="btn" href="/marker/edit_bio">Edit bio</a>
+    </div>
+    {% else %}
+    <p><a class="btn" href="/marker/make_bio">Create bio</a></p>
+    {% endif %}
+    <h2>Assigned exams</h2>
+    <table>
+        <tr><th>Exam</th><th>Date</th><th>Slot window</th><th>Slots</th><th></th></tr>
+        {% for e in exams %}
+        <tr>
+            <td>{{ e.name }}</td><td>{{ e.hold_date }}</td>
+            <td>{{ e.slot_from }} to {{ e.slot_until }}</td>
+            <td>{{ 'Open' if e.slot_open else 'Closed' }}</td>
+            <td><a href="/marker/manage_slots/{{ e.id }}">Slots</a></td>
+        </tr>
+        {% else %}<tr><td colspan="5">None</td></tr>{% endfor %}
+    </table>
+    <p style="margin-top:12px;">
+        <a class="btn" href="/marker/my_exams">All exams</a>
+        <a class="btn" href="/marker/see_holds">See holds</a>
+    </p>
+</div>
+{% endblock %}

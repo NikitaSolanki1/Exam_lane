@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>Slots · {{ exam.name }}</h1>
+    <p>Window: {{ exam.slot_from }} to {{ exam.slot_until }} · {{ 'Open' if creation_open else 'Closed' }}
+    {% if book_started %} · Booking started{% endif %}</p>
+    {% if locked %}<div class="msg">Slot is locked.</div>{% endif %}
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+    {% if creation_open and not book_started %}
+    <form class="form-wrap" method="post" style="margin:12px 0;">
+        <h2>Add slot</h2>
+        <label>Day</label><input type="date" name="day" required>
+        <label>Start</label><input type="time" name="start_clock" required>
+        <label>Capacity</label><input type="number" name="capacity" value="1" min="1" required>
+        <button class="btn" type="submit">Add</button>
+    </form>
+    {% endif %}
+    <table>
+        <tr><th>Day</th><th>Start</th><th>End</th><th>Cap</th><th>Free</th><th>State</th><th>Learners</th><th></th></tr>
+        {% for s in slots %}
+        <tr>
+            <td>{{ s.day }}</td><td>{{ s.start_clock }}</td><td>{{ s.end_clock }}</td>
+            <td>{{ s.capacity }}</td><td>{{ s.free_seats }}</td><td>{{ s.state }}</td>
+            <td>{% for h in by_slot.get(s.id, []) %}{{ people[h.learner_id].display_name if people.get(h.learner_id) else h.learner_id }}<br>{% else %}None{% endfor %}</td>
+            <td>{% if not book_started and not by_slot.get(s.id) %}<a href="/marker/edit_slot/{{ s.id }}">Edit</a> <a href="/marker/drop_slot/{{ s.id }}">Drop</a>{% else %}Locked{% endif %}</td>
+        </tr>
+        {% else %}<tr><td colspan="8">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}

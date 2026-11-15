@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="wrap">
+    <h1>My holds</h1>
+    <table>
+        <tr><th>ID</th><th>Exam</th><th>Exam date</th><th>Slot</th><th>Held on</th><th>State</th><th>Score</th><th></th></tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.hold.id }}</td>
+            <td>{{ item.exam.name if item.exam else '-' }}</td>
+            <td>{{ item.exam.hold_date if item.exam else '-' }}</td>
+            <td>{% if item.slot %}{{ item.slot.day }} {{ item.slot.start_clock }}{% else %}-{% endif %}</td>
+            <td>{{ item.hold.held_on }}</td><td>{{ item.state }}</td>
+            <td>{{ 'Live' if item.live else 'Hidden' }}</td>
+            <td>{% if item.can_cancel %}<a href="/learner/drop_seat/{{ item.hold.id }}">Cancel</a>{% else %}-{% endif %}</td>
+        </tr>
+        {% else %}<tr><td colspan="8">None</td></tr>{% endfor %}
+    </table>
+</div>
+{% endblock %}
