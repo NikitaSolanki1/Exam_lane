@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>All exam slots</h1>
+    <form action="/admin_routes/all_slots" method="get" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search slot ID, exam or examiner">
+        <button type="submit">Search</button>
+    </form>
+    <div style="overflow-x:auto;">
+    <table>
+        <thead>
+            <tr>
+                <th>Slot ID</th>
+                <th>Exam</th>
+                <th>Examiner</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Capacity</th>
+                <th>Booked</th>
+                <th>Available</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot in slots %}
+            {% set exam = exams.get(slot.exam_id) %}
+            {% set examiner = examiners.get(slot.examiner_id) %}
+            {% set booked = booked_counts.get(slot.id, 0) %}
+            <tr>
+                <td>{{ slot.id }}</td>
+                <td>{{ exam.title if exam else slot.exam_id }}</td>
+                <td>{{ examiner.full_name if examiner else slot.examiner_id }}</td>
+                <td>{{ slot.slot_date }}</td>
+                <td>{{ slot.begins_at }}</td>
+                <td>{{ slot.end_time }}</td>
+                <td>{{ slot.max_students }}</td>
+                <td>{{ booked }}</td>
+                <td>{{ slot.max_students - booked }}</td>
+                <td>{{ slot.slot_status }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="10">No slots found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/admin_routes/update_course/{{ course.id }}" method="post">
+    <h1>Edit course</h1>
+    <label for="course_code">Course code</label>
+    <input type="text" name="course_code" id="course_code" value="{{ course.course_code }}" required>
+    <label for="title">Course name</label>
+    <input type="text" name="title" id="title" value="{{ course.title }}" required>
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" value="{{ course.description }}" required>
+    <label for="duration_weeks">Duration (weeks)</label>
+    <input type="text" name="duration_weeks" id="duration_weeks" value="{{ course.duration_weeks }}" required>
+    <label for="status">Status</label>
+    <select name="status" id="status">
+        <option value="Active" {% if course.status == 'Active' %}selected{% endif %}>Active</option>
+        <option value="Inactive" {% if course.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

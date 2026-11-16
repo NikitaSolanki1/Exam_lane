@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>My bookings</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Exam</th>
+                <th>Exam date</th>
+                <th>Slot</th>
+                <th>Booked on</th>
+                <th>Status</th>
+                <th>Result</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in details %}
+            <tr>
+                <td>{{ item.booking.id }}</td>
+                <td>{{ item.exam.title if item.exam else '-' }}</td>
+                <td>{{ item.exam.scheduled_date if item.exam else '-' }}</td>
+                <td>
+                    {% if item.slot %}
+                    {{ item.slot.slot_date }} {{ item.slot.begins_at }} - {{ item.slot.end_time }}
+                    {% else %}-{% endif %}
+                </td>
+                <td>{{ item.booking.booking_date }}</td>
+                <td>{{ item.reservation_status }}</td>
+                <td>{{ 'Published' if item.published else 'Not published' }}</td>
+                <td>
+                    {% if item.can_cancel %}
+                    <a href="/student_routes/cancel_booking/{{ item.booking.id }}">Cancel</a>
+                    {% else %}-{% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8">No bookings yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/examiner_routes/update_slot/{{ slot.id }}" method="post">
+    <h1>Edit slot</h1>
+    <p>Exam: {{ exam.title }}</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <label for="slot_date">Date</label>
+    <input type="date" name="slot_date" id="slot_date" value="{{ slot.slot_date }}" required>
+    <label for="begins_at">Start time</label>
+    <input type="time" name="begins_at" id="begins_at" value="{{ slot.begins_at.strftime('%H:%M') }}" required>
+    <label for="max_students">Max students</label>
+    <input type="number" name="max_students" id="max_students" value="{{ slot.max_students }}" min="1" required>
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/admin_routes/reschedule_booking/{{ booking.id }}" method="post">
+    <h1>Move booking</h1>
+    <p>Exam: {{ exam.title }}</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <label for="slot_id">New slot</label>
+    <select name="slot_id" id="slot_id" required>
+        {% for slot in slots %}
+        <option value="{{ slot.id }}" {% if slot.id == booking.slot_id %}selected{% endif %}>
+            {{ slot.slot_date }} {{ slot.begins_at }} - {{ slot.end_time }} (cap {{ slot.max_students }})
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Save new slot</button>
+    <p style="margin-top:12px;"><a href="/admin_routes/all_bookings">Back to bookings</a></p>
+</form>
+{% endblock %}

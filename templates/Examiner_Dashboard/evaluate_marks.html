@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" style="max-width:560px;" method="post">
+    <h1>Mark student</h1>
+    <p>Exam: {{ exam.title }}</p>
+    <p>Student: {{ student.full_name }}</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+    {% for criterion in criteria %}
+    <label for="marks_{{ criterion.id }}">{{ criterion.criterion_title }} (max {{ criterion.max_score }})</label>
+    {% if criterion.description %}<small style="display:block;margin-bottom:6px;color:#4a5d73;">{{ criterion.description }}</small>{% endif %}
+    <input type="number" name="marks_{{ criterion.id }}" id="marks_{{ criterion.id }}"
+           min="0" max="{{ criterion.max_score }}"
+           value="{{ saved[criterion.id].awarded_marks if saved.get(criterion.id) else '' }}" required>
+    {% else %}
+    <div class="error">No rubric criteria for this exam.</div>
+    {% endfor %}
+
+    <label for="remark">Remarks / feedback</label>
+    <textarea name="remark" id="remark" rows="3">{{ remark.examiner_remarks if remark else '' }}</textarea>
+
+    <button type="submit">Submit marks</button>
+</form>
+{% endblock %}

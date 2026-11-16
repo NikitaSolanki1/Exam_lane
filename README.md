@@ -1,6 +1,6 @@
 # ExamLane
 
-Examination booking portal for Admin, Markers and Learners.
+Examination Management Portal for Admin, Examiners and Students.
 
 ## Run
 
@@ -12,7 +12,11 @@ python app.py
 
 Open http://127.0.0.1:5002
 
-## Admin
+## Admin login
 
 - Email: `admin@examlane.in`
 - Password: `lane_admin_2026`
+
+## Stack
+
+Flask · Jinja2 · HTML/CSS · Bootstrap · SQLite

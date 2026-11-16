@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Examiner desk</h1>
+    <div class="stats">
+        <div class="stat"><span>{{ assigned_exams|length }}</span><small>Assigned exams</small></div>
+        <div class="stat"><span>{{ slots|length }}</span><small>Created slots</small></div>
+        <div class="stat"><span>{{ bookings|length }}</span><small>Students booked</small></div>
+        <div class="stat"><span>{{ pending }}</span><small>Pending marks</small></div>
+    </div>
+
+    {% if profile %}
+    <div class="panel">
+        <h2 style="margin-top:0;">{{ user.full_name }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Department: {{ profile.department_name }}</p>
+        <p>Experience: {{ profile.experience_years }} years</p>
+        <p>Contact: {{ profile.contact_number }}</p>
+        <p>Office: {{ profile.office_address }}</p>
+        <a class="btn-dark-simple" href="/examiner_routes/update_profile">Edit profile</a>
+    </div>
+    {% else %}
+    <p class="lead">Add your profile so admin can assign exams to you.</p>
+    <a class="btn-dark-simple" href="/examiner_routes/create_profile">Create profile</a>
+    {% endif %}
+
+    <h2>Your examinations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Date</th>
+                <th>Slot window</th>
+                <th>Slot creation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exam in assigned_exams %}
+            <tr>
+                <td>{{ exam.title }}</td>
+                <td>{{ exam.scheduled_date }}</td>
+                <td>{{ exam.slot_creation_from }} to {{ exam.slot_creation_until }}</td>
+                <td>{{ 'Open' if exam.still_slot_creation else 'Closed' }}</td>
+                <td><a href="/examiner_routes/give_slot/{{ exam.id }}">Manage slots</a></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No exams assigned yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top:16px;">
+        <a class="btn-dark-simple" href="/examiner_routes/assigned_exams">All assigned exams</a>
+        <a class="btn-dark-simple" href="/examiner_routes/all_bookings">See bookings</a>
+    </p>
+</div>
+{% endblock %}

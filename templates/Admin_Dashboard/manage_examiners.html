@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Examiners</h1>
+    <form action="/admin_routes/manage_examiners" method="get" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search name, email or ID">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Approved</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for examiner in examiners %}
+            <tr>
+                <td>{{ examiner.id }}</td>
+                <td>{{ examiner.full_name }}</td>
+                <td>{{ examiner.email }}</td>
+                <td>{{ 'Yes' if examiner.approval_status else 'No' }}</td>
+                <td>{{ 'Yes' if examiner.is_active else 'No' }}</td>
+                <td>
+                    <a href="/admin_routes/examiner_details/{{ examiner.id }}">View</a>
+                    {% if not examiner.approval_status %}
+                    <a href="/admin_routes/approve_examiner/{{ examiner.id }}">Approve</a>
+                    {% endif %}
+                    {% if examiner.is_active %}
+                    <a href="/admin_routes/block_user/{{ examiner.id }}">Deactivate</a>
+                    {% else %}
+                    <a href="/admin_routes/unblock_user/{{ examiner.id }}">Activate</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No examiners found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

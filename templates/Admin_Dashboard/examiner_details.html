@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box" style="max-width:640px;">
+    <h1>Examiner profile</h1>
+    <p><strong>Name:</strong> {{ user.full_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Approved:</strong> {{ 'Yes' if user.approval_status else 'No' }}</p>
+    <p><strong>Active:</strong> {{ 'Yes' if user.is_active else 'No' }}</p>
+    {% if profile %}
+    <h2>Extra details</h2>
+    <p><strong>Department:</strong> {{ profile.department_name }}</p>
+    <p><strong>Contact:</strong> {{ profile.contact_number }}</p>
+    <p><strong>Office:</strong> {{ profile.office_address }}</p>
+    <p><strong>Experience:</strong> {{ profile.experience_years }} years</p>
+    {% else %}
+    <p class="lead">No profile filled yet.</p>
+    {% endif %}
+    <p><a class="btn-dark-simple" href="/admin_routes/manage_examiners">Back</a></p>
+</div>
+{% endblock %}

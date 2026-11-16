@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Rubric list</h1>
+    <p><a class="btn-dark-simple" href="/admin_routes/create_rubric/{{ exam_id }}">Add criterion</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Criterion</th>
+                <th>Max score</th>
+                <th>Weightage</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in criteria %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.criterion_title }}</td>
+                <td>{{ item.max_score }}</td>
+                <td>{{ item.weightage }}</td>
+                <td>{{ item.description }}</td>
+                <td>
+                    <a href="/admin_routes/update_rubric/{{ item.id }}">Edit</a>
+                    <a href="/admin_routes/delete_rubric/{{ item.id }}">Remove</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No rubric items yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

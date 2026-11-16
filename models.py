@@ -4,120 +4,120 @@ from datetime import date
 db = SQLAlchemy()
 
 
-class Account(db.Model):
-    __tablename__ = 'account'
+class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    display_name = db.Column(db.String(100), nullable=False)
-    login_name = db.Column(db.String(50), nullable=False)
+    full_name = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # admin / marker / learner
-    active_flag = db.Column(db.Boolean, default=True)
-    verified_flag = db.Column(db.Boolean, default=True)
+    account_type = db.Column(db.String(20), nullable=False)  # admin / examiner / student
+    is_active = db.Column(db.Boolean, default=True)
+    approval_status = db.Column(db.Boolean, default=True)
 
 
-class MarkerBio(db.Model):
-    __tablename__ = 'marker_bio'
+class Examiner_profile(db.Model):
+    __tablename__ = 'examiner_profile'
     id = db.Column(db.Integer, primary_key=True)
-    dept = db.Column(db.String(100), nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
-    office = db.Column(db.String(100), nullable=False)
-    years = db.Column(db.String(20), default='0')
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False, unique=True)
+    department_name = db.Column(db.String(100), nullable=False)
+    contact_number = db.Column(db.String(20), nullable=False)
+    office_address = db.Column(db.String(100), nullable=False)
+    experience_years = db.Column(db.String(20), default='0')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
 
 
-class LearnerBio(db.Model):
-    __tablename__ = 'learner_bio'
+class Student_profile(db.Model):
+    __tablename__ = 'student_profile'
     id = db.Column(db.Integer, primary_key=True)
-    roll_no = db.Column(db.String(30), unique=True)
-    phone = db.Column(db.String(20), nullable=False)
-    home_address = db.Column(db.String(100), nullable=False)
-    batch_year = db.Column(db.String(100), nullable=False)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False, unique=True)
+    registration_number = db.Column(db.String(30), unique=True)
+    contact_number = db.Column(db.String(20), nullable=False)
+    residential_address = db.Column(db.String(100), nullable=False)
+    academic_year = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
 
 
-class Subject(db.Model):
-    __tablename__ = 'subject'
+class Course(db.Model):
+    __tablename__ = 'course'
     id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(30), unique=True, nullable=False)
-    name = db.Column(db.String(50), nullable=False)
-    summary = db.Column(db.String(200), nullable=False)
-    weeks = db.Column(db.String(20), nullable=False)
-    state = db.Column(db.String(20), default='Active')
+    course_code = db.Column(db.String(30), unique=True, nullable=False)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    duration_weeks = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(20), default='Active')
 
 
-class Assessment(db.Model):
-    __tablename__ = 'assessment'
+class Examination(db.Model):
+    __tablename__ = 'examination'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    summary = db.Column(db.String(200), nullable=False)
-    kind = db.Column(db.String(40), default='Assessment')
-    hold_date = db.Column(db.Date, nullable=False)
-    minutes = db.Column(db.Integer, nullable=False)
-    total_marks = db.Column(db.Integer, default=100)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    exam_type = db.Column(db.String(40), default='Assessment')
+    scheduled_date = db.Column(db.Date, nullable=False)
+    duration_minutes = db.Column(db.Integer, nullable=False)
+    max_marks = db.Column(db.Integer, default=100)
 
-    slot_from = db.Column(db.Date, nullable=False)
-    slot_until = db.Column(db.Date, nullable=False)
-    book_from = db.Column(db.Date, nullable=False)
-    book_until = db.Column(db.Date, nullable=False)
+    slot_creation_from = db.Column(db.Date, nullable=False)
+    slot_creation_until = db.Column(db.Date, nullable=False)
+    booking_opens_at = db.Column(db.Date, nullable=False)
+    booking_closes_at = db.Column(db.Date, nullable=False)
 
-    phase = db.Column(db.String(30), default='Draft')
-    slot_open = db.Column(db.Boolean, default=False)
-    book_open = db.Column(db.Boolean, default=False)
-    result_live = db.Column(db.Boolean, default=False)
+    exam_status = db.Column(db.String(30), default='Draft')
+    still_slot_creation = db.Column(db.Boolean, default=False)
+    still_booking = db.Column(db.Boolean, default=False)
+    published_result = db.Column(db.Boolean, default=False)
 
-    marker_label = db.Column(db.String(100), nullable=False)
-    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
-    marker_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    examiner_name = db.Column(db.String(100), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    examiner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-class RubricLine(db.Model):
-    __tablename__ = 'rubric_line'
+class Rubrics(db.Model):
+    __tablename__ = 'rubrics'
     id = db.Column(db.Integer, primary_key=True)
-    label = db.Column(db.String(120), nullable=False)
-    max_points = db.Column(db.Integer, nullable=False)
-    weight = db.Column(db.Float, default=1.0)
-    note = db.Column(db.String(200), default='')
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
+    criterion_title = db.Column(db.String(120), nullable=False)
+    max_score = db.Column(db.Integer, nullable=False)
+    weightage = db.Column(db.Float, default=1.0)
+    description = db.Column(db.String(200), default='')
+    exam_id = db.Column(db.Integer, db.ForeignKey('examination.id'), nullable=False)
 
 
-class TimeSlot(db.Model):
-    __tablename__ = 'time_slot'
+class Slot(db.Model):
+    __tablename__ = 'slot'
     id = db.Column(db.Integer, primary_key=True)
-    day = db.Column(db.Date, nullable=False)
-    start_clock = db.Column(db.Time, nullable=False)
-    end_clock = db.Column(db.Time, nullable=False)
-    capacity = db.Column(db.Integer, nullable=False)
-    free_seats = db.Column(db.Integer, nullable=False)
-    state = db.Column(db.String(30), default='Available')
-    marker_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
+    slot_date = db.Column(db.Date, nullable=False)
+    begins_at = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    max_students = db.Column(db.Integer, nullable=False)
+    available_seats = db.Column(db.Integer, nullable=False)
+    slot_status = db.Column(db.String(30), default='Available')
+    examiner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    exam_id = db.Column(db.Integer, db.ForeignKey('examination.id'), nullable=False)
 
 
-class SeatHold(db.Model):
-    __tablename__ = 'seat_hold'
+class Booking(db.Model):
+    __tablename__ = 'booking'
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(db.String(30), default='Booked')
-    held_on = db.Column(db.Date, default=date.today)
-    slot_id = db.Column(db.Integer, db.ForeignKey('time_slot.id'), nullable=False)
-    learner_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
+    reservation_status = db.Column(db.String(30), default='Booked')
+    booking_date = db.Column(db.Date, default=date.today)
+    slot_id = db.Column(db.Integer, db.ForeignKey('slot.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    exam_id = db.Column(db.Integer, db.ForeignKey('examination.id'), nullable=False)
 
 
-class ScoreLine(db.Model):
-    __tablename__ = 'score_line'
+class Evaluation(db.Model):
+    __tablename__ = 'evaluation'
     id = db.Column(db.Integer, primary_key=True)
-    points = db.Column(db.Integer, nullable=False)
-    rubric_id = db.Column(db.Integer, db.ForeignKey('rubric_line.id'), nullable=False)
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
-    learner_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    marker_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    awarded_marks = db.Column(db.Integer, nullable=False)
+    rubric_id = db.Column(db.Integer, db.ForeignKey('rubrics.id'), nullable=False)
+    exam_id = db.Column(db.Integer, db.ForeignKey('examination.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    examiner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-class FeedbackNote(db.Model):
-    __tablename__ = 'feedback_note'
+class Remark(db.Model):
+    __tablename__ = 'remark'
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(500), nullable=False)
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'), nullable=False)
-    learner_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    marker_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    examiner_remarks = db.Column(db.String(500), nullable=False)
+    exam_id = db.Column(db.Integer, db.ForeignKey('examination.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    examiner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

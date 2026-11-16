@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
-{% block body %}
-<div class="wrap">
+{% block content %}
+<div class="box" style="max-width:760px;">
     <h1>ExamLane</h1>
-    <p>Book exam slots, mark learners, and publish results in one place.</p>
-    <h2>Roles</h2>
+    <p class="lead">Examination management for Admin, Examiners and Students.</p>
+
+    <h2>Who uses it</h2>
     <ul>
-        <li>Admin manages subjects, assessments, rubrics, markers and booking windows.</li>
-        <li>Markers create time slots and grade with rubrics.</li>
-        <li>Learners browse exams, reserve or cancel seats, and view scores.</li>
+        <li>Admins manage courses, exams and rubrics, approve examiners, and open or close slot and booking windows.</li>
+        <li>Examiners create time slots, view booked students, and evaluate using rubrics.</li>
+        <li>Students search exams, book or cancel slots, and view published results.</li>
     </ul>
+
     <p>
-        <a class="btn" href="/access/sign_in">Sign in</a>
-        <a class="btn" href="/access/join">Join</a>
+        <a class="btn-dark-simple" href="/auth/login">Login</a>
+        <a class="btn-dark-simple" href="/auth/register">Register</a>
     </p>
 </div>
 {% endblock %}

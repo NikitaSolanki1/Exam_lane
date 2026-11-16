@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Exam history</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Exam date</th>
+                <th>Slot</th>
+                <th>Status</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in history %}
+            <tr>
+                <td>{{ item.exam.title if item.exam else '-' }}</td>
+                <td>{{ item.exam.scheduled_date if item.exam else '-' }}</td>
+                <td>
+                    {% if item.slot %}
+                    {{ item.slot.slot_date }} {{ item.slot.begins_at }}
+                    {% else %}-{% endif %}
+                </td>
+                <td>{{ item.reservation_status }}</td>
+                <td>
+                    {% if item.published %}
+                    <a href="/student_routes/evaluating_marks">View</a>
+                    {% else %}
+                    Not published
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No completed or cancelled exams yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

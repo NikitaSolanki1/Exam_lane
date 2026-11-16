@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Admin desk</h1>
+    <p class="lead">Quick counts across the portal.</p>
+    <div class="stats">
+        <div class="stat"><span>{{ course_count }}</span><small>Courses</small></div>
+        <div class="stat"><span>{{ exam_count }}</span><small>Exams</small></div>
+        <div class="stat"><span>{{ student_count }}</span><small>Students</small></div>
+        <div class="stat"><span>{{ examiner_count }}</span><small>Examiners</small></div>
+        <div class="stat"><span>{{ slot_count }}</span><small>Slots</small></div>
+        <div class="stat"><span>{{ booking_count }}</span><small>Bookings</small></div>
+    </div>
+    <p>
+        <a class="btn-dark-simple" href="/admin_routes/create_course">New course</a>
+        <a class="btn-dark-simple" href="/admin_routes/create_exam">New exam</a>
+        <a class="btn-dark-simple" href="/admin_routes/manage_examiners">Approve examiners</a>
+        <a class="btn-dark-simple" href="/admin_routes/all_bookings">All bookings</a>
+        <a class="btn-dark-simple" href="/admin_routes/all_slots">All slots</a>
+    </p>
+</div>
+{% endblock %}

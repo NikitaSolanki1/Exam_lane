@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/admin_routes/create_exam" method="post">
+    <h1>New examination</h1>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <p class="lead">Timeline order: slot window, then booking window, then exam date.</p>
+
+    <label for="title">Exam name</label>
+    <input type="text" name="title" id="title" required>
+
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" required>
+
+    <label for="exam_type">Type</label>
+    <select name="exam_type" id="exam_type">
+        <option value="Viva">Viva</option>
+        <option value="Practical">Practical</option>
+        <option value="Project Demo">Project Demo</option>
+        <option value="Assessment" selected>Assessment</option>
+    </select>
+
+    <label for="scheduled_date">Exam date</label>
+    <input type="date" name="scheduled_date" id="scheduled_date" required>
+
+    <label for="duration_minutes">Duration (minutes)</label>
+    <input type="number" name="duration_minutes" id="duration_minutes" min="1" required>
+
+    <label for="max_marks">Maximum marks</label>
+    <input type="number" name="max_marks" id="max_marks" value="100" min="1" required>
+
+    <label for="slot_creation_from">Slot creation start</label>
+    <input type="date" name="slot_creation_from" id="slot_creation_from" required>
+
+    <label for="slot_creation_until">Slot creation end</label>
+    <input type="date" name="slot_creation_until" id="slot_creation_until" required>
+
+    <label for="booking_opens_at">Booking start</label>
+    <input type="date" name="booking_opens_at" id="booking_opens_at" required>
+
+    <label for="booking_closes_at">Booking end</label>
+    <input type="date" name="booking_closes_at" id="booking_closes_at" required>
+
+    <label for="examiner_id">Examiner</label>
+    <select name="examiner_id" id="examiner_id" required>
+        {% for examiner in examiners %}
+        <option value="{{ examiner.id }}">{{ examiner.full_name }} ({{ examiner.email }})</option>
+        {% endfor %}
+    </select>
+
+    <label for="course_id">Course</label>
+    <select name="course_id" id="course_id" required>
+        {% for course in courses %}
+        <option value="{{ course.id }}">{{ course.course_code }} - {{ course.title }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Save exam</button>
+</form>
+{% endblock %}

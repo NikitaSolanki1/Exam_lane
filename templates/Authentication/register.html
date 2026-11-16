@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/auth/register" method="post">
+    <h1>Register on ExamLane</h1>
+    <p class="lead">Register as a student or examiner. Examiners wait for admin approval.</p>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <label for="full_name">Full name</label>
+    <input id="full_name" name="full_name" type="text" required>
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" required>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required>
+    <label for="account_type">I am a</label>
+    <select id="account_type" name="account_type" required>
+        <option value="student">Student</option>
+        <option value="examiner">Examiner</option>
+    </select>
+    <button type="submit">Create account</button>
+    <p style="margin-top:16px;text-align:center;">Already joined? <a href="/auth/login">Sign in</a></p>
+</form>
+{% endblock %}

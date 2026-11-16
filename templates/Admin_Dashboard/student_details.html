@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box" style="max-width:640px;">
+    <h1>Student profile</h1>
+    <p><strong>Name:</strong> {{ user.full_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Active:</strong> {{ 'Yes' if user.is_active else 'No' }}</p>
+    {% if profile %}
+    <h2>Extra details</h2>
+    <p><strong>Registration no:</strong> {{ profile.registration_number }}</p>
+    <p><strong>Contact:</strong> {{ profile.contact_number }}</p>
+    <p><strong>Address:</strong> {{ profile.residential_address }}</p>
+    <p><strong>Academic year:</strong> {{ profile.academic_year }}</p>
+    {% else %}
+    <p class="lead">No profile filled yet.</p>
+    {% endif %}
+    <p><a class="btn-dark-simple" href="/admin_routes/manage_students">Back</a></p>
+</div>
+{% endblock %}

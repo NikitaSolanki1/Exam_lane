@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Student desk</h1>
+    <div class="stats">
+        <div class="stat"><span>{{ exams|length }}</span><small>Exams</small></div>
+        <div class="stat"><span>{{ open_slots|length }}</span><small>Open slots</small></div>
+        <div class="stat"><span>{{ upcoming|length }}</span><small>Upcoming</small></div>
+        <div class="stat"><span>{{ bookings|length }}</span><small>My bookings</small></div>
+        <div class="stat"><span>{{ published|length }}</span><small>Published results</small></div>
+    </div>
+
+    {% if pf %}
+    <div class="panel">
+        <h2 style="margin-top:0;">{{ user.full_name }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Registration: {{ pf.registration_number }}</p>
+        <p>Academic year: {{ pf.academic_year }}</p>
+        <p>Contact: {{ pf.contact_number }}</p>
+        <p>Address: {{ pf.residential_address }}</p>
+        <a class="btn-dark-simple" href="/student_routes/update_profile">Update profile</a>
+    </div>
+    {% else %}
+    <p class="lead">Create your profile to finish setup.</p>
+    <a class="btn-dark-simple" href="/student_routes/create_profile">Create profile</a>
+    {% endif %}
+
+    <h2>Slots you can book</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Seats left</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot in open_slots %}
+            {% set exam = exam_map.get(slot.exam_id) %}
+            <tr>
+                <td>{{ exam.title if exam else slot.exam_id }}</td>
+                <td>{{ slot.slot_date }}</td>
+                <td>{{ slot.begins_at }} - {{ slot.end_time }}</td>
+                <td>{{ slot.available_seats }}</td>
+                <td><a class="btn-dark-simple" href="/student_routes/slot_book/{{ slot.id }}">Book</a></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No open slots right now.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>My bookings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Slot</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            {% set exam = exam_map.get(booking.exam_id) %}
+            {% set slot = slot_map.get(booking.slot_id) %}
+            <tr>
+                <td>{{ exam.title if exam else booking.exam_id }}</td>
+                <td>{% if slot %}{{ slot.slot_date }} {{ slot.begins_at }}{% else %}-{% endif %}</td>
+                <td>{{ booking.reservation_status }}</td>
+                <td>
+                    {% if cancel_open.get(booking.id) %}
+                    <a href="/student_routes/cancel_booking/{{ booking.id }}">Cancel</a>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No bookings yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top:16px;">
+        <a class="btn-dark-simple" href="/student_routes/examinations">Browse exams</a>
+        <a class="btn-dark-simple" href="/student_routes/evaluating_marks">View results</a>
+    </p>
+</div>
+{% endblock %}

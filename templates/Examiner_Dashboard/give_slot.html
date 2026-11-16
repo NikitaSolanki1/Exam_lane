@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Slots · {{ exam.title }}</h1>
+    <p class="lead">Creation window: {{ exam.slot_creation_from }} to {{ exam.slot_creation_until }}</p>
+    <p>Status: {{ 'Open' if creation_open else 'Closed by admin' }}
+       {% if booking_started %} · Booking started — edit/delete locked{% endif %}
+    </p>
+    {% if locked %}<div class="error">This slot cannot change after booking starts or when students are booked.</div>{% endif %}
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+    {% if creation_open and not booking_started %}
+    <form action="/examiner_routes/give_slot/{{ exam.id }}" method="post" class="card-form" style="margin:16px 0;">
+        <h2 style="margin-top:0;">Add a slot</h2>
+        <label for="slot_date">Date</label>
+        <input type="date" name="slot_date" id="slot_date" required>
+        <label for="begins_at">Start time</label>
+        <input type="time" name="begins_at" id="begins_at" required>
+        <label for="max_students">Max students</label>
+        <input type="number" name="max_students" id="max_students" value="1" min="1" required>
+        <button type="submit">Add slot</button>
+    </form>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Capacity</th>
+                <th>Available</th>
+                <th>Status</th>
+                <th>Booked students</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot in slots %}
+            <tr>
+                <td>{{ slot.slot_date }}</td>
+                <td>{{ slot.begins_at }}</td>
+                <td>{{ slot.end_time }}</td>
+                <td>{{ slot.max_students }}</td>
+                <td>{{ slot.available_seats }}</td>
+                <td>{{ slot.slot_status }}</td>
+                <td>
+                    {% for b in booking_by_slot.get(slot.id, []) %}
+                        {{ student_map[b.student_id].full_name if student_map.get(b.student_id) else b.student_id }}<br>
+                    {% else %}
+                        None
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if not booking_started and not booking_by_slot.get(slot.id) %}
+                    <a href="/examiner_routes/update_slot/{{ slot.id }}">Edit</a>
+                    <a href="/examiner_routes/remove_slot/{{ slot.id }}">Remove</a>
+                    {% else %}
+                    Locked
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8">No slots created yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

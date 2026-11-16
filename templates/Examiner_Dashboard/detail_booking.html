@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box" style="max-width:640px;">
+    <h1>Booking details</h1>
+    <p><strong>Booking ID:</strong> {{ booking.id }}</p>
+    <p><strong>Status:</strong> {{ booking.reservation_status }}</p>
+    <p><strong>Exam:</strong> {{ exam.title }}</p>
+    <p><strong>Student:</strong> {{ student.full_name }} ({{ student.email }})</p>
+    {% if profile %}
+    <p><strong>Registration:</strong> {{ profile.registration_number }}</p>
+    <p><strong>Contact:</strong> {{ profile.contact_number }}</p>
+    {% endif %}
+    {% if slot %}
+    <p><strong>Slot:</strong> {{ slot.slot_date }} {{ slot.begins_at }} - {{ slot.end_time }}</p>
+    {% endif %}
+    {% if remark %}
+    <p><strong>Remarks:</strong> {{ remark.examiner_remarks }}</p>
+    {% endif %}
+    <p>
+        <a class="btn-dark-simple" href="/examiner_routes/evaluate_marks/{{ booking.id }}">Evaluate</a>
+        <a class="btn-dark-simple" href="/examiner_routes/all_bookings">Back</a>
+    </p>
+</div>
+{% endblock %}

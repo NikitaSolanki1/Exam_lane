@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/examiner_routes/create_profile" method="post">
+    <h1>Examiner profile</h1>
+    <label for="name">Full name</label>
+    <input type="text" name="name" id="name" value="{{ user.full_name }}" required>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+    <label for="department_name">Department</label>
+    <input type="text" name="department_name" id="department_name" value="{{ pf.department_name if pf else '' }}" required>
+    <label for="contact_number">Contact number</label>
+    <input type="text" name="contact_number" id="contact_number" value="{{ pf.contact_number if pf else '' }}" required>
+    <label for="office_address">Office address</label>
+    <input type="text" name="office_address" id="office_address" value="{{ pf.office_address if pf else '' }}" required>
+    <label for="experience_years">Experience (years)</label>
+    <input type="text" name="experience_years" id="experience_years" value="{{ pf.experience_years if pf else '0' }}" required>
+    <button type="submit">Save profile</button>
+</form>
+{% endblock %}

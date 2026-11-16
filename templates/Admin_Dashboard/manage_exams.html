@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Examinations</h1>
+    <form action="/admin_routes/manage_exams" method="get" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search exam name or ID">
+        <button type="submit">Search</button>
+    </form>
+    <p><a class="btn-dark-simple" href="/admin_routes/create_exam">New exam</a></p>
+    <div style="overflow-x:auto;">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Max marks</th>
+                <th>Examiner</th>
+                <th>Status</th>
+                <th>Rubric</th>
+                <th>Slot creation</th>
+                <th>Booking</th>
+                <th>Results</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exam in exams %}
+            <tr>
+                <td>{{ exam.id }}</td>
+                <td>{{ exam.title }}</td>
+                <td>{{ exam.exam_type }}</td>
+                <td>{{ exam.scheduled_date }}</td>
+                <td>{{ exam.duration_minutes }}</td>
+                <td>{{ exam.max_marks }}</td>
+                <td>{{ exam.examiner_name }}</td>
+                <td>{{ phases[exam.id] }}</td>
+                <td>
+                    <a href="/admin_routes/create_rubric/{{ exam.id }}">Add</a> /
+                    <a href="/admin_routes/manage_rubrics/{{ exam.id }}">List</a>
+                </td>
+                <td>
+                    {% if exam.still_slot_creation %}
+                    Open <a href="/admin_routes/close_slot_creation/{{ exam.id }}">Close</a>
+                    {% else %}
+                    Closed <a href="/admin_routes/allow_slot_creation/{{ exam.id }}">Open</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if exam.still_booking %}
+                    Open <a href="/admin_routes/close_booking/{{ exam.id }}">Close</a>
+                    {% else %}
+                    Closed <a href="/admin_routes/allow_booking/{{ exam.id }}">Open</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if exam.published_result %}
+                    Live <a href="/admin_routes/hide_results/{{ exam.id }}">Hide</a>
+                    {% else %}
+                    Hidden <a href="/admin_routes/publish_results/{{ exam.id }}">Publish</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/admin_routes/update_exam/{{ exam.id }}">Edit</a>
+                    <a href="/admin_routes/delete_exam/{{ exam.id }}">Remove</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="13">No examinations found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

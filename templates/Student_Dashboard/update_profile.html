@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/student_routes/update_profile" method="post">
+    <h1>Update student profile</h1>
+    <label for="registration_number">Registration number</label>
+    <input type="text" name="registration_number" id="registration_number" value="{{ pf.registration_number }}" required>
+    <label for="contact_number">Contact number</label>
+    <input type="text" name="contact_number" id="contact_number" value="{{ pf.contact_number }}" required>
+    <label for="residential_address">Address</label>
+    <input type="text" name="residential_address" id="residential_address" value="{{ pf.residential_address }}" required>
+    <label for="academic_year">Academic year</label>
+    <input type="text" name="academic_year" id="academic_year" value="{{ pf.academic_year }}" required>
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

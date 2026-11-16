@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/admin_routes/update_rubric/{{ rubric.id }}" method="post">
+    <h1>Edit rubric item</h1>
+    <label for="criterion">Criterion</label>
+    <input type="text" name="criterion" id="criterion" value="{{ rubric.criterion_title }}" required>
+    <label for="max_score">Maximum marks</label>
+    <input type="number" name="max_score" id="max_score" value="{{ rubric.max_score }}" min="1" required>
+    <label for="weightage">Weightage</label>
+    <input type="number" step="0.1" name="weightage" id="weightage" value="{{ rubric.weightage }}">
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" value="{{ rubric.description }}">
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

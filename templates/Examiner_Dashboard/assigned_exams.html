@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Assigned examinations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Course</th>
+                <th>Exam date</th>
+                <th>Duration</th>
+                <th>Slot creation</th>
+                <th>Booking</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exam in assigned_exams %}
+            {% set course = courses.get(exam.course_id) %}
+            <tr>
+                <td>{{ exam.id }}</td>
+                <td>{{ exam.title }}</td>
+                <td>{{ exam.exam_type }}</td>
+                <td>{{ course.title if course else exam.course_id }}</td>
+                <td>{{ exam.scheduled_date }}</td>
+                <td>{{ exam.duration_minutes }} min</td>
+                <td>{{ 'Open' if exam.still_slot_creation else 'Closed' }}</td>
+                <td>{{ 'Open' if exam.still_booking else 'Closed' }}</td>
+                <td><a href="/examiner_routes/give_slot/{{ exam.id }}">Manage slots</a></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="9">No exams assigned.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

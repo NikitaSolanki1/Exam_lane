@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Students</h1>
+    <form action="/admin_routes/manage_students" method="get" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search name, email or ID">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ 'Yes' if user.is_active else 'No' }}</td>
+                <td>
+                    <a href="/admin_routes/student_details/{{ user.id }}">View</a>
+                    {% if user.is_active %}
+                    <a href="/admin_routes/block_user/{{ user.id }}">Deactivate</a>
+                    {% else %}
+                    <a href="/admin_routes/unblock_user/{{ user.id }}">Activate</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No students found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

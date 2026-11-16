@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/examiner_routes/update_profile" method="post">
+    <h1>Update examiner profile</h1>
+    <label for="department_name">Department</label>
+    <input type="text" name="department_name" id="department_name" value="{{ pf.department_name }}" required>
+    <label for="contact_number">Contact number</label>
+    <input type="text" name="contact_number" id="contact_number" value="{{ pf.contact_number }}" required>
+    <label for="office_address">Office address</label>
+    <input type="text" name="office_address" id="office_address" value="{{ pf.office_address }}" required>
+    <label for="experience_years">Experience (years)</label>
+    <input type="text" name="experience_years" id="experience_years" value="{{ pf.experience_years }}" required>
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

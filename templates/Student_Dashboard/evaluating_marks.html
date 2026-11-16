@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Results and feedback</h1>
+    {% set ns = namespace(shown=false) %}
+    {% for exam in exams %}
+        {% if exam.published_result %}
+        {% set ns.shown = true %}
+        <div class="panel">
+            <h2 style="margin-top:0;">{{ exam.title }}</h2>
+            <p>Date: {{ exam.scheduled_date }} | Max marks: {{ exam.max_marks }}</p>
+            <table>
+                <thead>
+                    <tr><th>Criterion</th><th>Max</th><th>Awarded</th></tr>
+                </thead>
+                <tbody>
+                    {% for criterion in criteria_by_exam.get(exam.id, []) %}
+                    <tr>
+                        <td>{{ criterion.criterion_title }}</td>
+                        <td>{{ criterion.max_score }}</td>
+                        <td>{{ marks_by_criterion.get(criterion.id, '-') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3">No rubric data.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p><strong>Examiner remarks:</strong> {{ examiner_remarks.get(exam.id, 'No remarks') }}</p>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% if not ns.shown %}
+    <p class="lead">No published results yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

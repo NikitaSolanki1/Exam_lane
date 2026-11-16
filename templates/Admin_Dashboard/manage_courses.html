@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="box">
+    <h1>Courses</h1>
+    <form action="/admin_routes/manage_courses" method="get" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="search" name="q" value="{{ q or '' }}" placeholder="Search name, code or ID">
+        <button type="submit">Search</button>
+    </form>
+    <p><a class="btn-dark-simple" href="/admin_routes/create_course">New course</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Code</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.id }}</td>
+                <td>{{ course.course_code }}</td>
+                <td>{{ course.title }}</td>
+                <td>{{ course.description }}</td>
+                <td>{{ course.duration_weeks }}</td>
+                <td>{{ course.status }}</td>
+                <td>
+                    <a href="/admin_routes/update_course/{{ course.id }}">Edit</a>
+                    <a href="/admin_routes/delete_course/{{ course.id }}">Remove</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No courses yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

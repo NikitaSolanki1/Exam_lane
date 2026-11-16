@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="card-form" action="/admin_routes/update_exam/{{ exam.id }}" method="post">
+    <h1>Edit examination</h1>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    {% if this_exam_booked %}
+    <p class="error">This exam has active bookings. Examiner change stays locked until bookings are cancelled.</p>
+    {% endif %}
+
+    <label for="title">Exam name</label>
+    <input type="text" name="title" id="title" value="{{ exam.title }}" required>
+
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" value="{{ exam.description }}" required>
+
+    <label for="exam_type">Type</label>
+    <select name="exam_type" id="exam_type">
+        {% for t in ['Viva', 'Practical', 'Project Demo', 'Assessment'] %}
+        <option value="{{ t }}" {% if exam.exam_type == t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="scheduled_date">Exam date</label>
+    <input type="date" name="scheduled_date" id="scheduled_date" value="{{ exam.scheduled_date }}" required>
+
+    <label for="duration_minutes">Duration (minutes)</label>
+    <input type="number" name="duration_minutes" id="duration_minutes" value="{{ exam.duration_minutes }}" min="1" required>
+
+    <label for="max_marks">Maximum marks</label>
+    <input type="number" name="max_marks" id="max_marks" value="{{ exam.max_marks }}" min="1" required>
+
+    <label for="slot_creation_from">Slot creation start</label>
+    <input type="date" name="slot_creation_from" id="slot_creation_from" value="{{ exam.slot_creation_from }}" required>
+
+    <label for="slot_creation_until">Slot creation end</label>
+    <input type="date" name="slot_creation_until" id="slot_creation_until" value="{{ exam.slot_creation_until }}" required>
+
+    <label for="booking_opens_at">Booking start</label>
+    <input type="date" name="booking_opens_at" id="booking_opens_at" value="{{ exam.booking_opens_at }}" required>
+
+    <label for="booking_closes_at">Booking end</label>
+    <input type="date" name="booking_closes_at" id="booking_closes_at" value="{{ exam.booking_closes_at }}" required>
+
+    <label for="examiner_id">Examiner</label>
+    <select name="examiner_id" id="examiner_id" required {% if this_exam_booked %}disabled{% endif %}>
+        {% for examiner in examiners %}
+        <option value="{{ examiner.id }}" {% if examiner.id == exam.examiner_id %}selected{% endif %}>
+            {{ examiner.full_name }}
+        </option>
+        {% endfor %}
+    </select>
+    {% if this_exam_booked %}
+    <input type="hidden" name="examiner_id" value="{{ exam.examiner_id }}">
+    {% endif %}
+
+    <label for="course_id">Course</label>
+    <select name="course_id" id="course_id" required>
+        {% for course in courses %}
+        <option value="{{ course.id }}" {% if course.id == exam.course_id %}selected{% endif %}>
+            {{ course.course_code }} - {{ course.title }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}
